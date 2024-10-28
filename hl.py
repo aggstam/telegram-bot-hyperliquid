@@ -32,14 +32,21 @@ def hl_vault_info(address: str) -> str:
     data = info.user_state(address)
 
     # Format retrieved data
-    account_value = float(data['marginSummary']['accountValue'])
-    total_margin_used = float(data['marginSummary']['totalMarginUsed'])
+    account_value = 0
+    if data['marginSummary']['accountValue'] is not None:
+        account_value = float(data['marginSummary']['accountValue'])
+    total_margin_used = 0
+    if data['marginSummary']['totalMarginUsed'] is not None:
+        total_margin_used = float(data['marginSummary']['totalMarginUsed'])
     total_positions = len(data['assetPositions'])
 
     message = f'🚀 Trading Account Update 🚀\n\n'
     message += f'💰 Account Value: ${account_value:,.2f}\n'
     message += f'💼 Total Margin Used: ${total_margin_used:,.2f}\n'
-    message += f'Margin Usage: {total_margin_used/account_value:.2%}\n'
+    if account_value > 0:
+        message += f'Margin Usage: {total_margin_used/account_value:.2%}\n'
+    else:
+        message += f'Margin Usage: 0\n'
     message += f'Total positions: {total_positions}\n\n'
 
     # Parse vault positions
@@ -51,7 +58,9 @@ def hl_vault_info(address: str) -> str:
         message += f'Entry Price: ${float(position['entryPx']):,.6f}\n'
         message += f'Position Value: ${float(position['positionValue']):,.2f}\n'
 
-        unrealized_pnl = float(position['unrealizedPnl'])
+        unrealized_pnl = 0
+        if position['unrealizedPnl'] is not None:
+            unrealized_pnl = float(position['unrealizedPnl'])
         message += f'Unrealized P&L: ${unrealized_pnl:,.2f}'
         if unrealized_pnl > 0:
             message += ' 📈\n'
