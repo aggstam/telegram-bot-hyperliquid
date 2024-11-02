@@ -54,9 +54,18 @@ def hl_vault_info(address: str) -> str:
         position = position['position']
         message += '📊 Position Details:\n'
         message += f'Coin: {position['coin']}\n'
-        message += f'Size: {float(position['szi']):,.0f} coins\n'
-        message += f'Entry Price: ${float(position['entryPx']):,.6f}\n'
-        message += f'Position Value: ${float(position['positionValue']):,.2f}\n'
+        size = 0
+        if position['szi'] is not None:
+            size = float(position['szi'])
+        message += f'Size: {size:,.0f} coins\n'
+        entry = 0
+        if position['entryPx'] is not None:
+            entry = float(position['entryPx'])
+        message += f'Entry Price: ${entry:,.6f}\n'
+        value = 0
+        if position['positionValue'] is not None:
+            value = float(position['positionValue'])
+        message += f'Position Value: ${value:,.2f}\n'
 
         unrealized_pnl = 0
         if position['unrealizedPnl'] is not None:
@@ -67,13 +76,22 @@ def hl_vault_info(address: str) -> str:
         else:
             message += ' 📉\n'
 
-        message += f'Liquidation Price: ${float(position['liquidationPx']):,.6f}\n'
+        liquidation = 0
+        if position['liquidationPx'] is not None:
+            liquidation = float(position['liquidationPx'])
+        message += f'Liquidation Price: ${liquidation:,.6f}\n'
         message += f'Max Leverage: {position['maxLeverage']}x\n\n'
 
         cumulative_funding = position['cumFunding']
         message += '💸 Cumulative Funding:\n'
-        message += f'All Time: ${float(cumulative_funding['allTime']):,.2f}\n'
-        message += f'Since Open: ${float(cumulative_funding['sinceOpen']):,.2f}\n\n'
+        all_time = 0
+        if cumulative_funding['allTime'] is not None:
+            all_time = float(cumulative_funding['allTime'])
+        message += f'All Time: ${all_time:,.2f}\n'
+        since_open = 0
+        if cumulative_funding['sinceOpen'] is not None:
+            since_open = float(cumulative_funding['sinceOpen'])
+        message += f'Since Open: ${since_open:,.2f}\n\n'
 
     return message
 
