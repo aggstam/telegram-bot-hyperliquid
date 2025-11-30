@@ -26,18 +26,18 @@ The following OS dependencies are required:
 | python-venv    |
 
 Before first usage, you have to grab all the required python libraries:
-```
-% make bootstrap
+```shell
+$ make bootstrap
 ```
 ### Execution
 Since we are using a `python` virtual environment, we have to source
 it before starting the bot:
-```
-% . {FULL_PATH_REPO}/venv/bin/activate
+```shell
+$ . {FULL_PATH_REPO}/venv/bin/activate
 ```
 After that, you can modify the configuration and start the bot:
-```
-% make deploy
+```shell
+$ make deploy
 ```
 After the bot is up and running, you can verify it's working by
 sending it a prompt like `/hl vault`. The bot should respond with
